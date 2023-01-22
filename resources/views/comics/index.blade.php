@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('page-content')
-    <section class="container">
+    <section class="container position-relative">
         <h1 class="text-center">Lista Comics</h1>
         <table class="table">
             <thead>
@@ -13,6 +13,7 @@
                     <th scope="col">Tipo</th>
                     <th scope="col">Dettagli</th>
                     <th scope="col">Modifica</th>
+                    <th scope="col">Cancella</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,15 @@
                         <td>{{ $comic->type }}</td>
                         <td><a href="{{ route('comics.show', $comic->id) }}" class="btn btn-success">Vai</a></td>
                         <td><a href="{{ route('comics.edit', $comic->id) }}" class="btn btn-warning">Edit</a></td>
+                        <td>
+                            <form
+                                onsubmit="return confirm('Premendo \'Si\' cancellerai definivamente l\'elemento dalla pagina. Continuare?')"
+                                action="{{ route('comics.destroy', $comic->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
