@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class ComicController extends Controller
 {
+    private function validateData($request)
+    {
+        $request->validate([
+            'title' => 'required|string|min:1|max:100',
+            'description' => 'nullable|string',
+            'thumb' => 'nullable|url',
+            'price' => 'required|numeric|between:0.5,99.99',
+            'sale_date' => 'required|date',
+            'type' => 'required|string',
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,14 +48,7 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|min:1|max:100',
-            'description' => 'nullable|string',
-            'thumb' => 'nullable|url',
-            'price' => 'required|numeric|between:0.5,99.99',
-            'sale_date' => 'required|date',
-            'type' => 'required|string',
-        ]);
+        $this->validateData($request);
 
         $data = $request->all();
         $new_comic = new Comic();
@@ -94,14 +98,8 @@ class ComicController extends Controller
      */
     public function update(Request $request, Comic $comic)
     {
-        $request->validate([
-            'title' => 'required|string|min:1|max:100',
-            'description' => 'nullable|string',
-            'thumb' => 'nullable|url',
-            'price' => 'required|numeric|between:0.5,99.99',
-            'sale_date' => 'required|date',
-            'type' => 'required|string',
-        ]);
+        $this->validateData($request);
+
         //recuper0 tutti i dati
         $data = $request->all();
         //aggiorno la risorsa per intero
